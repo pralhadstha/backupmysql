@@ -58,6 +58,9 @@
       ini_set('display_errors', 'On');
       set_time_limit(0);
 
+      // Gibt für größere Datenbanken genügend Speicher frei.
+      ini_set('memory_limit', '1024M');
+
       $this->createBackupFolder();
       if($this->isConnectionDataClean()) {
         $this->connectDB();
