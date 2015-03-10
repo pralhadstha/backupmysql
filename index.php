@@ -39,10 +39,10 @@
     'FTP-Daten' => array(
 
       'Server-1' => array(
-        'server' => 'ftp.example.com',
-        'username' => '...',
-        'password' => '...',
-        'path' => '/',
+        'Server' => 'ftp.example.com',
+        'Username' => '...',
+        'Passwort' => '...',
+        'Pfad' => '/',
         'SSL' => false,
         'SSH' => false
       ),

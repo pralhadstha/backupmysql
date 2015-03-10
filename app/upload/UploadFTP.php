@@ -45,20 +45,20 @@
       // Es wird überprüft ob eine sichere Verbindung angegeben wurde, und ob der Server diese funktion zur verfügung hat.
       // Wenn nicht, wird eine normale Verbindung hergestellt.
       if($dataFTP['SSL'] && function_exists('ftp_ssl_connect')) {
-        $this->connection = ftp_ssl_connect($dataFTP['server']);
+        $this->connection = ftp_ssl_connect($dataFTP['Server']);
       } else {
         if($dataFTP['SSL']) {
           // Error 'Es konnte keine sichere FTP-Verbindung hergestellt werden. Eventuell unterstützt dein Server diese nicht. Es wird versucht eine normale FTP-Verbindung herzustellen'
         }
 
-        $this->connection = ftp_connect($dataFTP['server']);
+        $this->connection = ftp_connect($dataFTP['Server']);
       }
 
       // Es wird geprüft ob ein login möglich ist. Wenn nicht, und eine sichere Verbindung angegeben wurde,
       // kann der Server scheinbar mit verschlüsselten Details nicht umgehen, und es wird versucht eine normale FTP-Verbindung aufzubauen.
-      if( ! $login = ftp_login($this->connection, $dataFTP['username'], $dataFTP['password'])) {
-        $this->connection = ftp_connect($dataFTP['server']);
-        $login = ftp_login($this->connection, $dataFTP['username'], $dataFTP['password']);
+      if( ! $login = ftp_login($this->connection, $dataFTP['Username'], $dataFTP['Passwort'])) {
+        $this->connection = ftp_connect($dataFTP['Server']);
+        $login = ftp_login($this->connection, $dataFTP['Username'], $dataFTP['Passwort']);
       }
 
       if( ! $this->connection || ! $login) {
@@ -67,7 +67,7 @@
 
       ftp_pasv($this->connection, true);
 
-      $this->changeAndCreateDir($this->folder, $dataFTP['path']);
+      $this->changeAndCreateDir($this->folder, $dataFTP['Pfad']);
     }
 
     /**
