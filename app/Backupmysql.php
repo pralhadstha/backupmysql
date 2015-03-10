@@ -7,6 +7,7 @@
     private $password;
     private $database;
 
+    protected $databaseAlias;
     protected $zipCompression;
     protected $uploadFTP;
     protected $uploadDropbox;
@@ -29,12 +30,13 @@
 
     public function __construct(array $config)
     {
-      // todo: Change to keys.
-      $this->host = $config['host'];
-      $this->username = $config['username'];
-      $this->password = $config['passwort'];
-      $this->database = $config['datenbank'];
+      // todo: Keys.
+      $this->host = $config['Host'];
+      $this->username = $config['Username'];
+      $this->password = $config['Passwort'];
+      $this->database = $config['Datenbank'];
 
+      $this->databaseAlias = $config['Datenbank-Alias'] != '' ? $config['Datenbank-Alias'] : $this->database;
       $this->zipCompression = $config['ZIP-Komprimierung'];
       $this->uploadFTP = $config['FTP-Sicherung'];
       $this->uploadDropbox = $config['Dropbox-Sicherung'];
@@ -51,6 +53,7 @@
 
       $this->apiKey = $config['API-Schluessel'];
 
+      // todo: Deaktivieren.
       error_reporting(-1);
       ini_set('display_errors', 'On');
       set_time_limit(0);
@@ -66,12 +69,17 @@
       return $this->database;
     }
 
+    protected function getDBAliasName()
+    {
+      return $this->databaseAlias;
+    }
+
     /**
      * Erstelle einen Backup Ordner für die lokale Sicherung.
      */
     private function createBackupFolder()
     {
-      $this->folder = $this->backupFolder . '/' . $this->database;
+      $this->folder = $this->backupFolder . '/' . $this->databaseAlias;
 
       if( ! file_exists($this->folder) && ! mkdir($this->folder, 0777, true)) {
         // Error 'Keine Berechtigung zum erstellen für den Ordner'

@@ -6,10 +6,10 @@
     #  Ändere hier deine Daten für deine MySQL Verbindung.
     # ===============================================================
 
-    'host' => 'localhost',
-    'username' => '...',
-    'passwort' => '...',
-    'datenbank' => '...',
+    'Host' => 'localhost',
+    'Username' => '...',
+    'Passwort' => '...',
+    'Datenbank' => '...',
 
     # ===============================================================
     #  Hier kannst du verschiedene Optionen festlegen.
@@ -17,6 +17,7 @@
     #  Für genauere Infos: http://www.backup-mysql.de/docu/options
     # ===============================================================
 
+    'Datenbank-Alias' => '',
     'ZIP-Komprimierung' => true,
     'FTP-Sicherung' => true,
     'Dropbox-Sicherung' => false,
@@ -41,7 +42,7 @@
         'server' => 'ftp.example.com',
         'username' => '...',
         'password' => '...',
-        'path' => '...',
+        'path' => '/',
         'SSL' => false,
         'SSH' => false
       ),

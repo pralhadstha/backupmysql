@@ -20,8 +20,8 @@
     {
       parent::__construct($config);
 
-      // backup/db/xx.xx.xx--xx-xx-Uhr--db
-      $this->filePath = $this->folder . '/' . date('d.m.Y--H-i', time()) . '-Uhr--' . $this->getDBName();
+      // backup/dbAlias/xx.xx.xx--xx-xx-Uhr--dbAlias
+      $this->filePath = $this->folder . '/' . date('d.m.Y--H-i', time()) . '-Uhr--' . $this->getDBAliasName();
       $this->createSQLFile();
       $this->deleteOldBackups();
     }
@@ -32,7 +32,7 @@
     private function createSQLFile()
     {
       $this->storeTableNames();
-      $this->createSQLHead();
+      // $this->createSQLHead();
       $this->createSQLBody();
       $this->saveSQLFile($this->query);
       $this->cleanSQLBody();
@@ -59,8 +59,8 @@
       // Todo: Vor und Nachteile abwägen. So kann man die SQL Datei nicht auf
       // eine neue Datenbank (die nicht den selben Namen hat) importieren.
       // Oder Doku erstellen wo man das ändern kann in der SQL Datei.
-      //$this->query .= "CREATE DATABASE IF NOT EXISTS `" . $this->getDBName() . "`;\n";
-      //$this->query .= "USE `" . $this->getDBName() . "`;\n\n";
+      $this->query .= "CREATE DATABASE IF NOT EXISTS `" . $this->getDBName() . "`;\n";
+      $this->query .= "USE `" . $this->getDBName() . "`;\n\n";
     }
 
     /**
