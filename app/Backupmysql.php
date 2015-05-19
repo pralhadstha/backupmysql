@@ -1,5 +1,11 @@
 <?php
 
+  /**
+   * Backupmysql.
+   *
+   * @author Viktor Geringer <devfakeplus@googlemail.com>
+   * @link https://github.com/devfake/backupmysql
+   */
   class Backupmysql {
 
     private $host;

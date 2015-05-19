@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * BackupCleaner Klasse.
+   *
+   * Löscht Dateien nach dem komprimieren bzw. nach dem alter.
+   */
   class BackupCleaner {
 
     /**
