@@ -70,6 +70,9 @@
 
       asort($backupFilesWithTime);
 
+      // Umrechnung in Sekunden.
+      $maxAgeOfBackupFile = $maxAgeOfBackupFile * 60 * 60;
+
       // Löscht zuerst alte Backups.
       foreach($backupFilesWithTime as $backupFile => $backupTime) {
         if($backupTime <= time() - $maxAgeOfBackupFile) {

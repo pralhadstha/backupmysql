@@ -23,7 +23,7 @@
     'Dropbox-Sicherung' => false,
 
     'Max. Backup-Dateien' => 5,
-    'Max. Alter der Backup-Dateien' => 86400, // 1 Tag
+    'Max. Alter der Backup-Dateien' => 24, // In Stunden
 
     'Max. Groeße für FTP-Sicherung' => 100, // In MB
     'Max. Groeße für Dropbox-Sicherung' => 100, // In MB
