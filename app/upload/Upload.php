@@ -27,7 +27,7 @@
     protected function isConnectionDataClean($data)
     {
       foreach($data as $key => $value) {
-        if($key === 'path') continue;
+        if($key === 'Pfad') continue;
         if($value === '') return false;
       }
 

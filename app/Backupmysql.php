@@ -36,7 +36,7 @@
       $this->password = $config['Passwort'];
       $this->database = $config['Datenbank'];
 
-      $this->databaseAlias = $config['Datenbank-Alias'] != '' ? $config['Datenbank-Alias'] : $this->database;
+      $this->databaseAlias = $config['Datenbank-Alias'] ?: $this->database;
       $this->zipCompression = $config['ZIP-Komprimierung'];
       $this->uploadFTP = $config['FTP-Sicherung'];
       $this->uploadDropbox = $config['Dropbox-Sicherung'];

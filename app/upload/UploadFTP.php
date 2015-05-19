@@ -108,7 +108,7 @@
     private function changeAndCreateDir($folder, $path)
     {
       if( ! ftp_chdir($this->connection, $path)) {
-        // Error 'Es konnt nicht auf den angegebenen Start-Pfad gewechselt werden. Existiert der Ordner $path? Es wurde der Standard-Pfad genommen'
+        // Error 'Es konnte nicht auf den angegebenen Start-Pfad gewechselt werden. Existiert der Ordner $path? Es wurde der Standard-Pfad genommen'
       }
       $dirs = explode('/', $folder);
       foreach($dirs as $dir) {
@@ -126,7 +126,7 @@
     private function isFTPActivated()
     {
       if ( ! extension_loaded('ftp')) {
-        // Error 'Dein Server hat die FTP Erweiterung nicht Aktiviert'
+        // Error 'Dein Server hat die FTP Erweiterung nicht aktiviert'
         return false;
       }
 
