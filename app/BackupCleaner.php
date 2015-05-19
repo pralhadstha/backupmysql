@@ -90,4 +90,42 @@
         }
       }
     }
+
+    /**
+     * Löscht alte Backups vom SFTP Server.
+     */
+    public static function deleteOldBackupsFromSFTP($connection, $maxAgeOfBackupFile, $maxBackupFiles)
+    {
+      $backupFiles = $connection->rawlist();
+      sort($backupFiles);
+      $backupFiles = array_slice($backupFiles, 2);
+
+      // Erstellt ein neues Array mit den Dateien inklusive erstellter Zeit.
+      $backupFilesWithTime = array();
+      foreach($backupFiles as $backupFile) {
+        $backupFilesWithTime[$backupFile['filename']] = $backupFile['mtime'];
+      }
+
+      asort($backupFilesWithTime);
+
+      // Umrechnung in Sekunden.
+      $maxAgeOfBackupFile = $maxAgeOfBackupFile * 60 * 60;
+
+      // Löscht zuerst alte Backups.
+      foreach($backupFilesWithTime as $backupFile => $backupTime) {
+        if($backupTime <= time() - $maxAgeOfBackupFile) {
+          $connection->delete($backupFile);
+          unset($backupFilesWithTime[$backupFile]);
+        }
+      }
+
+      // Löscht nach der Anzahl der Backups.
+      if(count($backupFilesWithTime) > $maxBackupFiles) {
+        array_splice($backupFilesWithTime, -$maxBackupFiles);
+
+        foreach($backupFilesWithTime as $backupFile => $backupTime) {
+          $connection->delete($backupFile);
+        }
+      }
+    }
   }

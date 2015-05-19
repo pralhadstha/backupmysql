@@ -43,8 +43,7 @@
         'Username' => '...',
         'Passwort' => '...',
         'Pfad' => '/',
-        'SSL' => false,
-        'SSH' => false
+        'SFTP' => false
       ),
     ),
 
@@ -82,12 +81,16 @@
 
     public function __construct()
     {
+      set_include_path(__DIR__ . '/app/libs/phpseclib');
+
+      require 'app/libs/phpseclib/Net/SFTP.php';
       require 'app/Backupmysql.php';
       require 'app/BackupCleaner.php';
       require 'app/Backup.php';
 
       require 'app/upload/Upload.php';
       require 'app/upload/UploadFTP.php';
+      require 'app/upload/UploadSFTP.php';
       require 'app/upload/UploadDropbox.php';
 
       require 'app/ZIP.php';

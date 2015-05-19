@@ -190,11 +190,39 @@
       }
 
       if($this->uploadFTP) {
-        new UploadFTP($this->folder, $this->filePath, $this->dataFTP, $this->maxBackupFiles, $this->maxAgeOfBackupFile, $this->maxBackupSizeForFTP);
+        foreach($this->dataFTP as $key => $value) {
+          if($value['SFTP']) {
+            new UploadSFTP(
+              $this->folder,
+              $this->filePath,
+              $key,
+              $value,
+              $this->maxBackupFiles,
+              $this->maxAgeOfBackupFile,
+              $this->maxBackupSizeForFTP
+            );
+          } else {
+            new UploadFTP(
+              $this->folder,
+              $this->filePath,
+              $key,
+              $value,
+              $this->maxBackupFiles,
+              $this->maxAgeOfBackupFile,
+              $this->maxBackupSizeForFTP
+            );
+          }
+        }
       }
 
       if($this->uploadDropbox) {
-        new UploadDropbox($this->folder, $this->filePath, $this->dataDropbox, $this->maxBackupFiles, $this->maxAgeOfBackupFile, $this->maxBackupSizeForDropbox);
+        new UploadDropbox(
+          $this->folder,
+          $this->filePath,
+          $this->dataDropbox,
+          $this->maxBackupFiles,
+          $this->maxAgeOfBackupFile,
+          $this->maxBackupSizeForDropbox);
       }
     }
 

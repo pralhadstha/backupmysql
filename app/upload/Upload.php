@@ -12,7 +12,7 @@
     protected $folder;
     protected $filePath;
 
-    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
+    public function __construct($folder, $filePath, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
     {
       $this->maxBackupFiles = $maxBackupFiles;
       $this->maxAgeOfBackupFile = $maxAgeOfBackupFile;
@@ -33,6 +33,19 @@
       foreach($data as $key => $value) {
         if($key === 'Pfad') continue;
         if($value === '') return false;
+      }
+
+      return true;
+    }
+
+    /**
+     * Kontrolliert ob die Backup Datei nicht zu groß ist.
+     */
+    protected function isBackupSizeCorrect($filePath)
+    {
+      if(filesize($filePath) > $this->maxBackupSize) {
+        // Error 'Die Backup Datei überschreitet die maximal angegebene Dateigröße für den FTP-Upload'
+        return false;
       }
 
       return true;

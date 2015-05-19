@@ -7,31 +7,29 @@
    */
   class UploadFTP extends Upload {
 
-    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
+    public function __construct($folder, $filePath, $server, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
     {
       if( ! $this->isFTPActivated()) {
         return false;
       }
 
-      parent::__construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
+      parent::__construct($folder, $filePath, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
 
-      $this->boot($data);
+      $this->boot($server, $data);
     }
 
     /**
      * Bootstrap den Upload.
      */
-    private function boot($data)
+    private function boot($server, $data)
     {
-      foreach($data as $key => $value) {
-        if($this->isConnectionDataClean($value)) {
-          $this->connect($value);
-          $this->upload();
-          $this->deleteOldBackups();
-          ftp_close($this->connection);
-        } else {
-          // Error 'Es wurden für $key nicht alle FTP-Daten angegeben'
-        }
+      if($this->isConnectionDataClean($data)) {
+        $this->connect($data);
+        $this->upload();
+        $this->deleteOldBackups();
+        ftp_close($this->connection);
+      } else {
+        // Error 'Es wurden für $server nicht alle FTP-Daten angegeben'
       }
     }
 
@@ -44,7 +42,7 @@
     {
       // Es wird überprüft ob eine sichere Verbindung angegeben wurde, und ob der Server diese funktion zur verfügung hat.
       // Wenn nicht, wird eine normale Verbindung hergestellt.
-      if($dataFTP['SSL'] && function_exists('ftp_ssl_connect')) {
+      if(function_exists('ftp_ssl_connect')) {
         $this->connection = ftp_ssl_connect($dataFTP['Server']);
       } else {
         if($dataFTP['SSL']) {
@@ -55,7 +53,7 @@
       }
 
       // Es wird geprüft ob ein login möglich ist. Wenn nicht, und eine sichere Verbindung angegeben wurde,
-      // kann der Server scheinbar mit verschlüsselten Details nicht umgehen, und es wird versucht eine normale FTP-Verbindung aufzubauen.
+      // kann der Server nicht mit verschlüsselten Details umgehen, und es wird versucht eine normale FTP-Verbindung aufzubauen.
       if( ! $login = ftp_login($this->connection, $dataFTP['Username'], $dataFTP['Passwort'])) {
         $this->connection = ftp_connect($dataFTP['Server']);
         $login = ftp_login($this->connection, $dataFTP['Username'], $dataFTP['Passwort']);
@@ -95,19 +93,6 @@
     }
 
     /**
-     * Kontrolliert ob die Backup Datei nicht zu groß ist.
-     */
-    private function isBackupSizeCorrect($filePath)
-    {
-      if(filesize($filePath) > $this->maxBackupSize) {
-        // Error 'Die Backup Datei überschreitet die maximal angegebene Dateigröße für den FTP-Upload'
-        return false;
-      }
-
-      return true;
-    }
-
-    /**
      * Löscht alte Backups raus.
      */
     private function deleteOldBackups()
@@ -125,7 +110,9 @@
       if( ! ftp_chdir($this->connection, $path)) {
         // Error 'Es konnte nicht auf den angegebenen Start-Pfad gewechselt werden. Existiert der Ordner $path? Es wurde der Standard-Pfad genommen'
       }
+
       $dirs = explode('/', $folder);
+
       foreach($dirs as $dir) {
         if( ! ftp_chdir($this->connection, $dir)) {
           ftp_mkdir($this->connection, $dir);
