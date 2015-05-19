@@ -14,7 +14,7 @@
     # ===============================================================
     #  Hier kannst du verschiedene Optionen festlegen.
     #
-    #  Für genauere Infos: http://www.backup-mysql.de/docu/options
+    #  Für mehr Infos: http://www.backup-mysql.de/docu/options
     # ===============================================================
 
     'Datenbank-Alias' => '',
@@ -25,15 +25,15 @@
     'Max. Backup-Dateien' => 5,
     'Max. Alter der Backup-Dateien' => 86400, // 1 Tag
 
-    'Max. Groeße für FTP-Sicherung' => 104857600, // 100 MB
-    'Max. Groeße für Dropbox-Sicherung' => 104857600, // 100 MB
+    'Max. Groeße für FTP-Sicherung' => 100, // In MB
+    'Max. Groeße für Dropbox-Sicherung' => 100, // In MB
 
     'Backup-Ordner' => 'mysql_backups',
 
     # ===============================================================
     #  FTP-Daten auf die deine Backups hochgeladen werden.
     #
-    #  Für genauere Infos: http://www.backup-mysql.de/docu/data#ftp
+    #  Für mehr Infos: http://www.backup-mysql.de/docu/data#ftp
     # ===============================================================
 
     'FTP-Daten' => array(

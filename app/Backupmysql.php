@@ -51,8 +51,9 @@
       $this->maxBackupFiles = $config[8];
       $this->maxAgeOfBackupFile = $config[9];
 
-      $this->maxBackupSizeForFTP = $config[10];
-      $this->maxBackupSizeForDropbox = $config[11];
+      // Umrechnung in Byte.
+      $this->maxBackupSizeForFTP = (int) $config[10] * 1024 * 1024;
+      $this->maxBackupSizeForDropbox = (int) $config[11] * 1024 * 1024;
 
       $this->backupFolder = $config[12];
 

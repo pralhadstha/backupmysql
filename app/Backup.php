@@ -190,11 +190,11 @@
       }
 
       if($this->uploadFTP) {
-        new UploadFTP($this->folder, $this->filePath, $this->dataFTP, $this->maxBackupFiles, $this->maxAgeOfBackupFile);
+        new UploadFTP($this->folder, $this->filePath, $this->dataFTP, $this->maxBackupFiles, $this->maxAgeOfBackupFile, $this->maxBackupSizeForFTP);
       }
 
       if($this->uploadDropbox) {
-        new UploadDropbox($this->folder, $this->filePath, $this->dataFTP, $this->maxBackupFiles, $this->maxAgeOfBackupFile);
+        new UploadDropbox($this->folder, $this->filePath, $this->dataDropbox, $this->maxBackupFiles, $this->maxAgeOfBackupFile, $this->maxBackupSizeForDropbox);
       }
     }
 

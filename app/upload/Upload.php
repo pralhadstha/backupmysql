@@ -7,16 +7,20 @@
     protected $maxBackupFiles;
     protected $maxAgeOfBackupFile;
 
+    protected $maxBackupSize;
+
     protected $folder;
     protected $filePath;
 
-    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile)
+    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
     {
       $this->maxBackupFiles = $maxBackupFiles;
       $this->maxAgeOfBackupFile = $maxAgeOfBackupFile;
 
       $this->folder = $folder;
       $this->filePath = $filePath;
+
+      $this->maxBackupSize = $maxBackupSize;
     }
 
     /**

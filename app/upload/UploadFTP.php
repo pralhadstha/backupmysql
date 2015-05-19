@@ -7,13 +7,13 @@
    */
   class UploadFTP extends Upload {
 
-    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile)
+    public function __construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize)
     {
       if( ! $this->isFTPActivated()) {
         return false;
       }
 
-      parent::__construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile);
+      parent::__construct($folder, $filePath, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
 
       $this->boot($data);
     }
@@ -85,11 +85,26 @@
         // Error 'Der FTP-Upload ist fehlgeschlagen. Es wurde keine Backup Datei gefunden'
       }
 
-      $filename = explode('/', $filePath);
+      if($this->isBackupSizeCorrect($filePath)) {
+        $filename = explode('/', $filePath);
 
-      if( ! ftp_put($this->connection, end($filename), $filePath, $ftpMode)) {
-        // Error 'Der FTP-Upload ist fehlgeschlagen'
+        if( ! ftp_put($this->connection, end($filename), $filePath, $ftpMode)) {
+          // Error 'Der FTP-Upload ist fehlgeschlagen'
+        }
       }
+    }
+
+    /**
+     * Kontrolliert ob die Backup Datei nicht zu groß ist.
+     */
+    private function isBackupSizeCorrect($filePath)
+    {
+      if(filesize($filePath) > $this->maxBackupSize) {
+        // Error 'Die Backup Datei überschreitet die maximal angegebene Dateigröße für den FTP-Upload'
+        return false;
+      }
+
+      return true;
     }
 
     /**
