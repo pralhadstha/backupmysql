@@ -30,28 +30,30 @@
 
     public function __construct(array $config)
     {
-      // todo: Keys.
-      $this->host = $config['Host'];
-      $this->username = $config['Username'];
-      $this->password = $config['Passwort'];
-      $this->database = $config['Datenbank'];
+      $config = array_values($config);
 
-      $this->databaseAlias = $config['Datenbank-Alias'] ?: $this->database;
-      $this->zipCompression = $config['ZIP-Komprimierung'];
-      $this->uploadFTP = $config['FTP-Sicherung'];
-      $this->uploadDropbox = $config['Dropbox-Sicherung'];
+      $this->host = $config[0];
+      $this->username = $config[1];
+      $this->password = $config[2];
+      $this->database = $config[3];
 
-      $this->maxBackupFiles = $config['Max. Backup-Dateien'];
-      $this->maxAgeOfBackupFile = $config['Max. Alter der Backup-Dateien'];
+      $this->databaseAlias = $config[4] ?: $this->database;
+      $this->zipCompression = $config[5];
+      $this->uploadFTP = $config[6];
+      $this->uploadDropbox = $config[7];
 
-      $this->maxBackupSizeForFTP = $config['Max. Groeße für FTP-Sicherung'];
-      $this->maxBackupSizeForDropbox = $config['Max. Groeße für Dropbox-Sicherung'];
+      $this->maxBackupFiles = $config[8];
+      $this->maxAgeOfBackupFile = $config[9];
 
-      $this->backupFolder = $config['Backup-Ordner'];
+      $this->maxBackupSizeForFTP = $config[10];
+      $this->maxBackupSizeForDropbox = $config[11];
 
-      $this->dataFTP = $config['FTP-Daten'];
+      $this->backupFolder = $config[12];
 
-      $this->apiKey = $config['API-Schluessel'];
+      $this->dataFTP = $config[13];
+      $this->dataDropbox = $config[14];
+
+      $this->apiKey = $config[15];
 
       // todo: Deaktivieren.
       error_reporting(-1);
