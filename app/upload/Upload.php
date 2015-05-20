@@ -26,10 +26,13 @@
     /**
      * Prüft ob leere Verbindungsdaten hinterlegt sind.
      *
-     * Eine Außnahme gilt für den Pfad. Ist dieser leer, wird eine Verbindung zum 'standard-root' Ordner hergestellt.
+     * Ist der Wert ein String, wird die Überprüfung übersprungen.
+     * Ist der Pfad leer, wird eine Verbindung zum 'standard-root' Ordner hergestellt.
      */
     protected function isConnectionDataClean($data)
     {
+      if(is_string($data)) return true;
+
       foreach($data as $key => $value) {
         if($key === 'Pfad') continue;
         if($value === '') return false;

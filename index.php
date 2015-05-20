@@ -48,6 +48,23 @@
     ),
 
     # ===============================================================
+    #  Dropbox-Daten auf die deine Backups hochgeladen werden.
+    #
+    #  Für mehr Infos: http://www.backup-mysql.de/docu/data#dropbox
+    # ===============================================================
+
+    'Dropbox-Daten' => array(
+
+      'Datenbank' => 'backupmysql',
+
+      'Account-1' => array(
+        'Key' => '',
+        'Secret' => '',
+        'Pfad' => '/'
+      ),
+    ),
+
+    # ===============================================================
     #  Dein API-Schlüssel.
     #
     #  Dieser stellt die Verbindung zwischen deinem Server
