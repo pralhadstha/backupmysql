@@ -45,10 +45,6 @@
       if(function_exists('ftp_ssl_connect')) {
         $this->connection = ftp_ssl_connect($dataFTP['Server']);
       } else {
-        if($dataFTP['SSL']) {
-          // Error 'Es konnte keine sichere FTP-Verbindung hergestellt werden. Eventuell unterstützt dein Server diese nicht. Es wird versucht eine normale FTP-Verbindung herzustellen'
-        }
-
         $this->connection = ftp_connect($dataFTP['Server']);
       }
 
