@@ -216,13 +216,17 @@
       }
 
       if($this->uploadDropbox) {
-        new UploadDropbox(
-          $this->folder,
-          $this->filePath,
-          $this->dataDropbox,
-          $this->maxBackupFiles,
-          $this->maxAgeOfBackupFile,
-          $this->maxBackupSizeForDropbox);
+        foreach($this->dataDropbox as $key => $value) {
+          new UploadDropbox(
+            $this->folder,
+            $this->filePath,
+            $key,
+            $value,
+            $this->maxBackupFiles,
+            $this->maxAgeOfBackupFile,
+            $this->maxBackupSizeForDropbox
+          );
+        }
       }
     }
 
