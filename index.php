@@ -19,8 +19,8 @@
 
     'Datenbank-Alias' => '',
     'ZIP-Komprimierung' => true,
-    'FTP-Sicherung' => true,
-    'Dropbox-Sicherung' => false,
+    'FTP-Sicherung' => false,
+    'Dropbox-Sicherung' => true,
 
     'Max. Backup-Dateien' => 5,
     'Max. Alter der Backup-Dateien' => 24, // In Stunden
@@ -29,6 +29,7 @@
     'Max. Groeße für Dropbox-Sicherung' => 100, // In MB
 
     'Backup-Ordner' => 'mysql_backups',
+    'Backup-Datenbank' => 'backupmysql',
 
     # ===============================================================
     #  FTP-Daten auf die deine Backups hochgeladen werden.
@@ -39,12 +40,13 @@
     'FTP-Daten' => array(
 
       'Server-1' => array(
-        'Server' => 'ftp.example.com',
+        'Server' => '...',
         'Username' => '...',
         'Passwort' => '...',
         'Pfad' => '/',
-        'SFTP' => false
+        'SFTP' => true
       ),
+
     ),
 
     # ===============================================================
@@ -55,12 +57,9 @@
 
     'Dropbox-Daten' => array(
 
-      'Datenbank' => 'backupmysql',
-
       'Account-1' => array(
-        'Key' => '',
-        'Secret' => '',
-        'Pfad' => '/'
+        'Key' => '...',
+        'Secret' => '...'
       ),
     ),
 
