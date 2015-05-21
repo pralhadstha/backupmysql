@@ -25,9 +25,11 @@
     private function create($filePath, $filename)
     {
       $zip = new ZipArchive();
+
       if($zip->open($filePath . '.zip', ZIPARCHIVE::CREATE) !== true) {
         // Error 'Konnte keine ZIP Datei erstellen. Bitte kontrolliere ob der Ordner die erforderlichen Rechte hat'
       }
+
       $zip->addFile($filePath . '.sql', $filename . '.sql');
       $zip->close();
 
