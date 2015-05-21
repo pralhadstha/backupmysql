@@ -14,6 +14,10 @@
 
     public function __construct($folder, $filePath, $server, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize, $apiKey, $dbData, $backupDB)
     {
+      if( ! $this->isPDOActivated()) {
+        return false;
+      }
+
       parent::__construct($folder, $filePath, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
 
       $this->apiKey = $apiKey;
@@ -95,5 +99,18 @@
     private function deleteOldBackups()
     {
       BackupCleaner::deleteOldBackupsFromDropbox($this->connection, $this->maxAgeOfBackupFile, $this->maxBackupFiles, $this->path);
+    }
+
+    /**
+     * Kontrolliert ob der Server die PDO Erweiterung installiert hat.
+     */
+    private function isPDOActivated()
+    {
+      if ( ! extension_loaded('pdo')) {
+        // Error 'Dein Server hat die PDO Erweiterung nicht aktiviert'
+        return false;
+      }
+
+      return true;
     }
   }
