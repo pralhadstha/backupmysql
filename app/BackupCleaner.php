@@ -4,6 +4,8 @@
    * BackupCleaner Klasse.
    *
    * Löscht Dateien nach dem komprimieren bzw. nach dem alter.
+   *
+   * todo: ioc!!!
    */
   class BackupCleaner {
 
@@ -128,6 +130,45 @@
 
         foreach($backupFilesWithTime as $backupFile => $backupTime) {
           $connection->delete($backupFile);
+        }
+      }
+    }
+
+    /**
+     * Löscht alte Backups aus Dropbox.
+     */
+    public static function deleteOldBackupsFromDropbox($connection, $maxAgeOfBackupFile, $maxBackupFiles, $path)
+    {
+      $backupFiles = $connection->metaData($path)['body']->contents;
+
+      // Erstellt ein neues Array mit den Dateien inklusive erstellter Zeit.
+      $backupFilesWithTime = array();
+      foreach($backupFiles as $backupFile) {
+        $filename = explode('/', $backupFile->path);
+        $mtime = strtotime($backupFile->modified);
+
+        $backupFilesWithTime[end($filename)] = $mtime;
+      }
+
+      asort($backupFilesWithTime);
+
+      // Umrechnung in Sekunden.
+      $maxAgeOfBackupFile = $maxAgeOfBackupFile * 60 * 60;
+
+      // Löscht zuerst alte Backups.
+      foreach($backupFilesWithTime as $backupFile => $backupTime) {
+        if($backupTime <= time() - $maxAgeOfBackupFile) {
+          $connection->delete($path . '/' . $backupFile);
+          unset($backupFilesWithTime[$backupFile]);
+        }
+      }
+
+      // Löscht nach der Anzahl der Backups.
+      if(count($backupFilesWithTime) > $maxBackupFiles) {
+        array_splice($backupFilesWithTime, -$maxBackupFiles);
+
+        foreach($backupFilesWithTime as $backupFile => $backupTime) {
+          $connection->delete($path . '/' . $backupFile);
         }
       }
     }

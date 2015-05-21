@@ -4,26 +4,23 @@
    * Dropbox Upload Klasse.
    *
    * Überträgt das Backup in Dropbox.
-   *
-   * todo: change dropbox lib...
    */
   class UploadDropbox extends Upload {
 
     private $apiKey;
     private $dbData;
     private $backupDB;
+    private $path;
 
     public function __construct($folder, $filePath, $server, $data, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize, $apiKey, $dbData, $backupDB)
     {
-      /*if( ! $this->isFTPActivated()) {
-        return false;
-      }*/
+      parent::__construct($folder, $filePath, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
 
       $this->apiKey = $apiKey;
       $this->dbData = $dbData;
       $this->backupDB = $backupDB;
-
-      parent::__construct($folder, $filePath, $maxBackupFiles, $maxAgeOfBackupFile, $maxBackupSize);
+      $path = explode('/', $this->folder);
+      $this->path = end($path);
 
       $this->boot($server, $data);
     }
@@ -35,7 +32,7 @@
     {
       spl_autoload_register(function($class){
         $class = str_replace('\\', '/', $class);
-        require_once(__DIR__ . '/../libs/dropbox/' . $class . '.php');
+        require_once(__DIR__ . '/../libs/' . $class . '.php');
       });
 
       if($this->isConnectionDataClean($data)) {
@@ -48,14 +45,15 @@
     }
 
     /**
-     *
+     * Stellt die Verbindung zur Dropbox App her.
+     * Speichert den OAuth Token in der Datenbank.
      */
     private function connect($dataDropbox)
     {
       $key = $dataDropbox['Key'];
       $secret = $dataDropbox['Secret'];
 
-      $protocol = (!empty($_SERVER['HTTPS'])) ? 'https' : 'http';
+      $protocol = ( ! empty($_SERVER['HTTPS'])) ? 'https' : 'http';
       $callback = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
       $encrypter = new \Dropbox\OAuth\Storage\Encrypter($this->apiKey);
@@ -70,7 +68,7 @@
     }
 
     /**
-     *
+     * Ladet die Datei hoch.
      */
     private function upload()
     {
@@ -84,19 +82,18 @@
 
       if($this->isBackupSizeCorrect($filePath)) {
         $filename = explode('/', $filePath);
-        $folder = explode('/', $this->folder);
 
-        if( ! $this->connection->putFile(__DIR__ . '/../../' . $filePath, end($filename), end($folder))) {
+        if( ! $this->connection->putFile(__DIR__ . '/../../' . $filePath, end($filename), $this->path)) {
           // Error 'Der Dropbox-Upload ist fehlgeschlagen'
         }
       }
     }
 
     /**
-     *
+     * Löscht alte Backups raus.
      */
     private function deleteOldBackups()
     {
-
+      BackupCleaner::deleteOldBackupsFromDropbox($this->connection, $this->maxAgeOfBackupFile, $this->maxBackupFiles, $this->path);
     }
   }
