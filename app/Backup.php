@@ -182,6 +182,8 @@
 
     /**
      * Prüft die Optionen die der Benutzer angelegt hat und führt die nötigen Prozesse durch.
+     *
+     * todo: too much arguments...
      */
     private function throughOptions()
     {
@@ -224,7 +226,10 @@
             $value,
             $this->maxBackupFiles,
             $this->maxAgeOfBackupFile,
-            $this->maxBackupSizeForDropbox
+            $this->maxBackupSizeForDropbox,
+            $this->apiKey,
+            $this->dbData,
+            $this->backupDB
           );
         }
       }

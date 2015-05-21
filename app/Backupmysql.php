@@ -8,10 +8,7 @@
    */
   class Backupmysql {
 
-    private $host;
-    private $username;
-    private $password;
-    private $database;
+    protected $dbData = [];
 
     protected $databaseAlias;
     protected $zipCompression;
@@ -25,6 +22,7 @@
     protected $maxBackupSizeForDropbox;
 
     protected $backupFolder;
+    protected $backupDB;
 
     protected $dataFTP = array();
 
@@ -38,12 +36,12 @@
     {
       $config = array_values($config);
 
-      $this->host = $config[0];
-      $this->username = $config[1];
-      $this->password = $config[2];
-      $this->database = $config[3];
+      $this->dbData['host'] = $config[0];
+      $this->dbData['username'] = $config[1];
+      $this->dbData['password'] = $config[2];
+      $this->dbData['database'] = $config[3];
 
-      $this->databaseAlias = $config[4] ?: $this->database;
+      $this->databaseAlias = $config[4] ?: $this->dbData['database'];
       $this->zipCompression = $config[5];
       $this->uploadFTP = $config[6];
       $this->uploadDropbox = $config[7];
@@ -56,13 +54,14 @@
       $this->maxBackupSizeForDropbox = (int) $config[11] * 1024 * 1024;
 
       $this->backupFolder = $config[12];
+      $this->backupDB = $config[13] ?: $this->dbData['database'];
 
-      $this->dataFTP = $config[13];
-      $this->dataDropbox = $config[14];
+      $this->dataFTP = $config[14];
+      $this->dataDropbox = $config[15];
 
-      $this->apiKey = $config[15];
+      $this->apiKey = $config[16];
 
-      // todo: Deaktivieren.
+      // todo: deaktivieren.
       error_reporting(-1);
       ini_set('display_errors', 'On');
       set_time_limit(0);
@@ -78,7 +77,7 @@
 
     protected function getDBName()
     {
-      return $this->database;
+      return $this->dbData['database'];
     }
 
     protected function getDBAliasName()
@@ -103,7 +102,7 @@
      */
     private function isConnectionDataClean()
     {
-      if($this->host != '' && $this->username != '' && $this->password != '' && $this->database != '') {
+      if($this->dbData['host'] != '' && $this->dbData['username'] != '' && $this->dbData['password'] != '' && $this->dbData['database'] != '') {
         return true;
       }
 
@@ -116,7 +115,7 @@
      */
     private function connectDB()
     {
-      $this->db = new mysqli($this->host, $this->username, $this->password, $this->database);
+      $this->db = new mysqli($this->dbData['host'], $this->dbData['username'], $this->dbData['password'], $this->dbData['database']);
 
       if($this->db->connect_errno) {
         // Error 'Es konnte keine Datenbank Verbindung aufgebaut werden'
