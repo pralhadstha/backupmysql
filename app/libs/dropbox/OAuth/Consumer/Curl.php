@@ -81,6 +81,8 @@ class Curl extends ConsumerAbstract
         // Get the default options array
         $options = $this->defaultOptions;
         $options[CURLOPT_CAINFO] = dirname(__FILE__) . '/ca-bundle.pem';
+        // forcing safe upload false for php version > 5.6
+        $options[CURLOPT_SAFE_UPLOAD]=false;
         
         if ($method == 'GET' && $this->outFile) { // GET
             $options[CURLOPT_RETURNTRANSFER] = false;
